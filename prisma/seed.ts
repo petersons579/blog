@@ -3,9 +3,29 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  const user1 = await prisma.user.upsert({
+    where: { email: 'sabin@adams.com' },
+    update: {},
+    create: {
+      email: 'sabin@adams.com',
+      name: 'Sabin Adams',
+      password: 'password-sabin',
+    },
+  });
+
+  const user2 = await prisma.user.upsert({
+    where: { email: 'alex@ruheni.com' },
+    update: {},
+    create: {
+      email: 'alex@ruheni.com',
+      name: 'Alex Ruheni',
+      password: 'password-alex',
+    },
+  });
+
   const post1 = await prisma.article.upsert({
     where: { title: 'Prisma Adds Support for MongoDB' },
-    update: {},
+    update: { authorId: user1.id },
     create: {
       title: 'Prisma Adds Support for MongoDB',
       body: 'Support for MongoDB has been one of the most requested features since the initial release of...',
@@ -17,7 +37,7 @@ async function main() {
 
   const post2 = await prisma.article.upsert({
     where: { title: "What's new in Prisma? (Q1/22)" },
-    update: {},
+    update: { authorId: user2.id },
     create: {
       title: "What's new in Prisma? (Q1/22)",
       body: 'Our engineers have been working hard, issuing new releases with many improvements...',
