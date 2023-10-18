@@ -18,20 +18,20 @@ export class ArticlesController {
 
   @Get('drafts')
   @ApiOkResponse({ type: Article, isArray: true })
-  findDrafts() {
-    return this.articlesService.findDrafts();
+  async findDrafts() {
+    return (await this.articlesService.findDrafts()).map((article) => new Article(article));
   }
 
   @Get()
   @ApiOkResponse({ type: Article, isArray: true })
-  findAll() {
-    return this.articlesService.findAll();
+  async findAll() {
+    return (await this.articlesService.findDrafts()).map((article) => new Article(article));
   }
 
   @Get(':id')
   @ApiOkResponse({ type: Article })
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.articlesService.findOne(id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return new Article(await this.articlesService.findOne(id));
   }
 
   @Patch(':id')

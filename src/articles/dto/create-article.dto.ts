@@ -10,7 +10,6 @@ export class CreateArticleDto {
 
   @IsString()
   @IsOptional()
-  @IsNotEmpty()
   @MaxLength(300)
   @ApiProperty({ required: false })
   description?: string;
