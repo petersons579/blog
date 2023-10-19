@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import { AuthEntity } from './entities/auth.entity';
@@ -17,7 +18,7 @@ export class AuthService {
 
     if (!user) throw new UnauthorizedException('Email or Password are incorrect!');
 
-    const isPasswordValid = user.password === password;
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) throw new UnauthorizedException('Email or Password are incorrect!');
 
